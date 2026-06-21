@@ -1,0 +1,22 @@
+{
+  "name": "eve-agents",
+  "version": "0.1.0",
+  "description": "CLI for discovering and installing Eve agent templates",
+  "type": "module",
+  "bin": {
+    "eve-agents": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "typescript": "^5"
+  }
+}

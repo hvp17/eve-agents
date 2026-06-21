@@ -1,0 +1,62 @@
+[
+  {
+    "id": "vercel-labs/eve-content-agent-template",
+    "name": "Content Agent",
+    "owner": "vercel-labs",
+    "repo": "eve-content-agent-template",
+    "description": "Slack bot that drafts blog posts, LinkedIn posts, release notes, and newsletters in your house voice from Notion.",
+    "channels": ["slack"],
+    "connections": ["notion"],
+    "tags": ["content", "slack", "notion", "writing"],
+    "installs": 1240,
+    "featured": true
+  },
+  {
+    "id": "vercel-labs/personal-agent-template",
+    "name": "Personal Agent",
+    "owner": "vercel-labs",
+    "repo": "personal-agent-template",
+    "description": "Durable personal AI assistant with long-term memory. Web chat, Slack, Linear, and user-approved memory saves.",
+    "channels": ["web", "slack", "imessage"],
+    "connections": ["linear", "slack"],
+    "tags": ["personal", "memory", "linear", "slack"],
+    "installs": 980,
+    "featured": true
+  },
+  {
+    "id": "vercel-labs/eve-pr-triage-agent-template",
+    "name": "GitHub PR Triage",
+    "owner": "vercel-labs",
+    "repo": "eve-pr-triage-agent-template",
+    "description": "Triages pull requests on open: reads the diff, applies labels, and posts a structured triage comment.",
+    "channels": ["github"],
+    "connections": ["github"],
+    "tags": ["github", "devtools", "triage", "automation"],
+    "installs": 756,
+    "featured": true
+  },
+  {
+    "id": "vercel-labs/eve-chat-template",
+    "name": "Eve Chat",
+    "owner": "vercel-labs",
+    "repo": "eve-chat-template",
+    "description": "Persisted Next.js chat UI for Eve with Better Auth, Neon history, Streamdown markdown, and Vercel Connect integrations.",
+    "channels": ["web", "slack"],
+    "connections": ["notion", "linear", "sentry"],
+    "tags": ["web", "chat", "nextjs", "starter"],
+    "installs": 642,
+    "featured": false
+  },
+  {
+    "id": "vercel-labs/eve-slack-agent-template",
+    "name": "Slack Starter",
+    "owner": "vercel-labs",
+    "repo": "eve-slack-agent-template",
+    "description": "Starter Slack bot on Eve with one example tool and one skill. Deploy, @mention it, and start building.",
+    "channels": ["slack"],
+    "connections": [],
+    "tags": ["slack", "starter", "beginner"],
+    "installs": 521,
+    "featured": false
+  }
+]
