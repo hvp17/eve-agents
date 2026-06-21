@@ -34,11 +34,20 @@ function isRateLimited(ip: string): boolean {
 }
 
 function isAuthorized(request: Request): boolean {
-  const secret = process.env.INSTALL_API_SECRET;
-  if (!secret) return process.env.NODE_ENV !== "production";
-
   const header = request.headers.get("authorization");
-  return header === `Bearer ${secret}`;
+  const token = header?.startsWith("Bearer ") ? header.slice(7) : null;
+
+  const secret = process.env.INSTALL_API_SECRET;
+  const clientToken = process.env.TELEMETRY_CLIENT_TOKEN;
+
+  if (token && secret && token === secret) return true;
+  if (token && clientToken && token === clientToken) return true;
+
+  if (!secret && !clientToken) {
+    return process.env.NODE_ENV !== "production";
+  }
+
+  return false;
 }
 
 export async function POST(request: Request) {

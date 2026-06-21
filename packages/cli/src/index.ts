@@ -2,10 +2,13 @@
 
 import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
-import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import catalog from "./catalog.json" with { type: "json" };
+import {
+  getDefaultTelemetryUrl,
+  TELEMETRY_CLIENT_TOKEN,
+} from "./telemetry.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -48,8 +51,10 @@ function resolveTargetDir(targetDir: string): string {
   const resolved = path.resolve(cwd, targetDir);
   const relative = path.relative(cwd, resolved);
 
-  if (relative.startsWith("..") || path.isAbsolute(relative)) {
-    throw new Error(`--dir must stay inside the current directory: ${targetDir}`);
+  if (relative.startsWith("..")) {
+    throw new Error(
+      `--dir must be a relative path inside ${cwd} (got: ${targetDir})`,
+    );
   }
 
   return resolved;
@@ -69,30 +74,39 @@ function run(command: string, args: string[], cwd: string): Promise<void> {
 }
 
 async function recordInstall(owner: string, repo: string): Promise<void> {
-  const endpoint = process.env.EVE_AGENTS_TELEMETRY_URL;
-  if (!endpoint) return;
+  if (process.env.EVE_AGENTS_TELEMETRY === "0") return;
 
-  const headers: Record<string, string> = {
-    "content-type": "application/json",
-  };
-
-  const secret = process.env.INSTALL_API_SECRET;
-  if (secret) {
-    headers.authorization = `Bearer ${secret}`;
-  }
+  const endpoint = process.env.EVE_AGENTS_TELEMETRY_URL ?? getDefaultTelemetryUrl();
+  const token =
+    process.env.INSTALL_API_SECRET ??
+    process.env.EVE_AGENTS_TELEMETRY_TOKEN ??
+    TELEMETRY_CLIENT_TOKEN;
 
   try {
     const response = await fetch(endpoint, {
       method: "POST",
-      headers,
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify({ owner, repo, source: "cli" }),
     });
 
     if (!response.ok) {
-      console.warn(`Telemetry failed (${response.status}): install not recorded`);
+      const detail = await response.text().catch(() => "");
+      console.warn(
+        `Telemetry failed (${response.status} at ${endpoint}): install not recorded`,
+      );
+      if (detail) console.warn(detail);
+      return;
+    }
+
+    const data = (await response.json()) as { installs?: number };
+    if (typeof data.installs === "number") {
+      console.log(`Install recorded (${data.installs} total on directory)`);
     }
   } catch {
-    console.warn("Telemetry unreachable: install not recorded");
+    console.warn(`Telemetry unreachable at ${endpoint}: install not recorded`);
   }
 }
 

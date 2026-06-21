@@ -58,16 +58,38 @@ Run `npm run build:cli` after changing the catalog so the CLI bundle stays in sy
 Install counts are stored separately from catalog metadata:
 
 - **Local dev:** `data/install-counts.json` (atomic writes)
-- **Production:** Vercel KV via `KV_REST_API_URL` and `KV_REST_API_TOKEN`
+- **Production:** Upstash Redis / Vercel KV via `KV_REST_API_URL` and `KV_REST_API_TOKEN`
 
-Configure the CLI to report installs:
+The CLI reports installs automatically after each catalog `add` (skills.sh-style). No env vars required for end users.
+
+### Vercel env vars
+
+| Variable | Required | Value |
+|----------|----------|-------|
+| `KV_REST_API_URL` | Yes | From Upstash integration |
+| `KV_REST_API_TOKEN` | Yes | From Upstash integration |
+| `TELEMETRY_CLIENT_TOKEN` | Yes | `ea_pub_8c4f2e1a9b6d3f7e` (matches embedded CLI token) |
+| `INSTALL_API_SECRET` | Optional | Admin override for manual API calls |
+
+Disable telemetry locally: `EVE_AGENTS_TELEMETRY=0`
+
+Override endpoint (staging): `EVE_AGENTS_TELEMETRY_URL=https://your-preview.vercel.app/api/install`
+
+Update `packages/cli/src/telemetry.ts` (`DEFAULT_TELEMETRY_ORIGIN`) or set `EVE_AGENTS_SITE_URL` if your production URL differs.
+
+### Test install telemetry locally
 
 ```bash
-export EVE_AGENTS_TELEMETRY_URL=http://localhost:3000/api/install
-export INSTALL_API_SECRET=your-secret   # required in production
+# terminal 1
+npm run dev
+
+# terminal 2
+EVE_AGENTS_TELEMETRY_URL=http://localhost:3000/api/install \
+  node packages/cli/dist/index.js add vercel-labs/eve-slack-agent-template \
+  --dir test-slack --skip-install
 ```
 
-On Vercel, set `INSTALL_API_SECRET` on both the web app and clients that POST to `/api/install`.
+You should see `Install recorded (1 total on directory)` and `data/install-counts.json` will update.
 
 ## Related
 
