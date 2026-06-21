@@ -1,5 +1,5 @@
 /** Production directory site. Override with EVE_AGENTS_SITE_URL at runtime. */
-export const DEFAULT_TELEMETRY_ORIGIN = "https://eve-agents.vercel.app";
+export const DEFAULT_TELEMETRY_ORIGIN = "https://eve-agents-web.vercel.app";
 
 export function getDefaultTelemetryUrl(): string {
   const origin =
