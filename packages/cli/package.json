@@ -7,13 +7,12 @@
     "eve-agents": "./dist/index.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/catalog.json"
   ],
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch"
-  },
-  "dependencies": {
+    "build": "tsc && node scripts/bundle-catalog.mjs",
+    "dev": "node scripts/bundle-catalog.mjs && tsc --watch"
   },
   "devDependencies": {
     "@types/node": "^20",

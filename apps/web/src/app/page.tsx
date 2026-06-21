@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { searchAgents, installCommand } from "@eve-agents/catalog";
+import { searchAgents, installCommand } from "@/lib/catalog";
 import { AgentSearch } from "@/components/agent-search";
+
+export const revalidate = 60;
 
 type HomeProps = {
   searchParams: Promise<{ q?: string }>;
@@ -9,7 +11,7 @@ type HomeProps = {
 
 export default async function Home({ searchParams }: HomeProps) {
   const { q } = await searchParams;
-  const agents = searchAgents(q ?? "");
+  const agents = await searchAgents(q ?? "");
 
   return (
     <main className="mx-auto max-w-5xl px-6 py-12">
@@ -113,11 +115,11 @@ export default async function Home({ searchParams }: HomeProps) {
         <p>
           Submit your agent by opening a PR to{" "}
           <code className="font-mono text-foreground">packages/catalog/src/agents.json</code>.
-          Install counts update when users run{" "}
+          Install counts are recorded when users run{" "}
           <code className="font-mono text-foreground">
             {installCommand("owner", "repo")}
-          </code>
-          .
+          </code>{" "}
+          with telemetry configured.
         </p>
       </section>
     </main>

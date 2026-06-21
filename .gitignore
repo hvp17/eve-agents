@@ -7,6 +7,7 @@ node_modules/
 dist/
 .next/
 out/
+packages/cli/src/catalog.json
 
 # env
 .env*

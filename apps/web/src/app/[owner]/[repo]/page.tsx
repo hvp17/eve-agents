@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { agentCatalog, getAgent, installCommand } from "@eve-agents/catalog";
+import { agentCatalog, getAgent, installCommand } from "@/lib/catalog";
+
+export const revalidate = 60;
 
 type PageProps = {
   params: Promise<{ owner: string; repo: string }>;
@@ -15,7 +17,7 @@ export function generateStaticParams() {
 
 export default async function AgentPage({ params }: PageProps) {
   const { owner, repo } = await params;
-  const agent = getAgent(owner, repo);
+  const agent = await getAgent(owner, repo);
 
   if (!agent) {
     notFound();

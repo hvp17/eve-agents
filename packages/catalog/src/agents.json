@@ -8,7 +8,6 @@
     "channels": ["slack"],
     "connections": ["notion"],
     "tags": ["content", "slack", "notion", "writing"],
-    "installs": 1240,
     "featured": true
   },
   {
@@ -20,7 +19,6 @@
     "channels": ["web", "slack", "imessage"],
     "connections": ["linear", "slack"],
     "tags": ["personal", "memory", "linear", "slack"],
-    "installs": 980,
     "featured": true
   },
   {
@@ -32,7 +30,6 @@
     "channels": ["github"],
     "connections": ["github"],
     "tags": ["github", "devtools", "triage", "automation"],
-    "installs": 756,
     "featured": true
   },
   {
@@ -44,7 +41,6 @@
     "channels": ["web", "slack"],
     "connections": ["notion", "linear", "sentry"],
     "tags": ["web", "chat", "nextjs", "starter"],
-    "installs": 642,
     "featured": false
   },
   {
@@ -56,7 +52,6 @@
     "channels": ["slack"],
     "connections": [],
     "tags": ["slack", "starter", "beginner"],
-    "installs": 521,
     "featured": false
   }
 ]
