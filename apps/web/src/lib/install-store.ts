@@ -4,7 +4,7 @@ import {
   incrementInstallCountInFile,
   readInstallCountsFromFile,
 } from "@eve-agents/catalog/install-store";
-import { isCatalogAgent } from "@eve-agents/catalog";
+import { isCatalogAgent } from "./catalog";
 
 const KV_KEY = "install-counts";
 
@@ -33,7 +33,7 @@ export async function incrementInstallCount(
   owner: string,
   repo: string,
 ): Promise<number> {
-  if (!isCatalogAgent(owner, repo)) {
+  if (!(await isCatalogAgent(owner, repo))) {
     throw new Error("Agent is not in the catalog");
   }
 

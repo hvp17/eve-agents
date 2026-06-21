@@ -1,19 +1,18 @@
 import {
   agentCatalog,
   getAgentFromRecords,
-  getFeaturedAgents,
-  isCatalogAgent,
-  mergeInstallCounts,
+  installCommand,
   searchAgentRecords,
   type EveAgent,
 } from "@eve-agents/catalog";
-import { getInstallCounts } from "./install-store";
+import { getAgentCatalogWithInstalls } from "./catalog-source";
 
 export type { EveAgent };
 
+export { isAutoIndexed } from "@eve-agents/indexer";
+
 export async function getAgentCatalog(): Promise<EveAgent[]> {
-  const counts = await getInstallCounts();
-  return mergeInstallCounts(agentCatalog, counts);
+  return getAgentCatalogWithInstalls();
 }
 
 export async function getAgent(
@@ -29,6 +28,12 @@ export async function searchAgents(query: string): Promise<EveAgent[]> {
   return searchAgentRecords(catalog, query);
 }
 
-export { getFeaturedAgents, isCatalogAgent };
+export async function isCatalogAgent(
+  owner: string,
+  repo: string,
+): Promise<boolean> {
+  const { isAgentInCatalog } = await import("./catalog-source");
+  return isAgentInCatalog(owner, repo);
+}
 
-export { agentCatalog, installCommand } from "@eve-agents/catalog";
+export { agentCatalog, installCommand };

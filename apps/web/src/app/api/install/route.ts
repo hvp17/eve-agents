@@ -76,7 +76,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid owner or repo" }, { status: 400 });
   }
 
-  if (!isCatalogAgent(owner, repo)) {
+  if (!(await isCatalogAgent(owner, repo))) {
     return NextResponse.json({ error: "Agent not in catalog" }, { status: 404 });
   }
 

@@ -1,6 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { agentCatalog, getAgent, installCommand } from "@/lib/catalog";
+import {
+  agentCatalog,
+  getAgent,
+  installCommand,
+  isAutoIndexed,
+} from "@/lib/catalog";
+
+export const dynamicParams = true;
 
 export const revalidate = 60;
 
@@ -36,7 +43,14 @@ export default async function AgentPage({ params }: PageProps) {
         <p className="font-mono text-xs uppercase tracking-widest text-muted">
           {owner}/{repo}
         </p>
-        <h1 className="mt-2 text-3xl font-semibold tracking-tight">{agent.name}</h1>
+        <h1 className="mt-2 text-3xl font-semibold tracking-tight">
+          {agent.name}
+          {isAutoIndexed(agent) ? (
+            <span className="ml-3 rounded-full border border-border px-2.5 py-1 align-middle font-mono text-xs uppercase tracking-wider text-muted">
+              auto-indexed
+            </span>
+          ) : null}
+        </h1>
         <p className="mt-4 text-base leading-7 text-muted">{agent.description}</p>
       </header>
 

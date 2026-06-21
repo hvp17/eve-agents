@@ -3,24 +3,14 @@
 import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
-import catalog from "./catalog.json" with { type: "json" };
+import {
+  isCatalogAgent,
+  loadCatalogAgents,
+} from "./catalog-remote.js";
 import {
   getDefaultTelemetryUrl,
   TELEMETRY_CLIENT_TOKEN,
 } from "./telemetry.js";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-type AgentRecord = {
-  id: string;
-  owner: string;
-  repo: string;
-  name: string;
-  featured: boolean;
-};
-
-const agents = catalog as AgentRecord[];
 
 function parseRepoArg(arg: string): { owner: string; repo: string } {
   const cleaned = arg
@@ -39,11 +29,6 @@ function parseRepoArg(arg: string): { owner: string; repo: string } {
   }
 
   return { owner, repo };
-}
-
-function isCatalogAgent(owner: string, repo: string): boolean {
-  const id = `${owner}/${repo}`;
-  return agents.some((agent) => agent.id === id);
 }
 
 function resolveTargetDir(targetDir: string): string {
@@ -127,7 +112,7 @@ async function addAgent(
 ): Promise<void> {
   const { owner, repo } = parseRepoArg(source);
 
-  if (!options.force && !isCatalogAgent(owner, repo)) {
+  if (!options.force && !(await isCatalogAgent(owner, repo))) {
     throw new Error(
       `${owner}/${repo} is not in the eve-agents catalog. Use --force to install anyway.`,
     );
@@ -152,7 +137,7 @@ async function addAgent(
     await run("npm", ["install"], destination);
   }
 
-  if (isCatalogAgent(owner, repo)) {
+  if (await isCatalogAgent(owner, repo)) {
     await recordInstall(owner, repo);
   }
 
@@ -165,6 +150,7 @@ async function addAgent(
 }
 
 async function listAgents(featuredOnly: boolean): Promise<void> {
+  const agents = await loadCatalogAgents();
   const list = featuredOnly
     ? agents.filter((agent) => agent.featured)
     : agents;

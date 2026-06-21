@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { EveLogo } from "@/components/eve-logo";
-import { searchAgents, installCommand } from "@/lib/catalog";
+import { isAutoIndexed, searchAgents, installCommand } from "@/lib/catalog";
 import { AgentSearch } from "@/components/agent-search";
 
 export const revalidate = 60;
@@ -76,6 +76,11 @@ export default async function Home({ searchParams }: HomeProps) {
                     >
                       <span className="font-medium text-foreground group-hover:text-accent">
                         {agent.name}
+                        {isAutoIndexed(agent) ? (
+                          <span className="ml-2 rounded-full border border-border px-2 py-0.5 align-middle font-mono text-[10px] uppercase tracking-wider text-muted">
+                            auto-indexed
+                          </span>
+                        ) : null}
                       </span>
                       <span className="mt-1 block font-mono text-xs text-muted">
                         {agent.owner}/{agent.repo}

@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 const repoRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), "../..");
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["@eve-agents/catalog"],
+  transpilePackages: ["@eve-agents/catalog", "@eve-agents/indexer"],
   outputFileTracingRoot: repoRoot,
 };
 

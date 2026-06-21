@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@eve-agents/catalog": "*",
+    "@eve-agents/indexer": "*",
     "@vercel/kv": "^3.0.0",
     "@tailwindcss/postcss": "4.3.1",
     "lightningcss": "1.29.2",

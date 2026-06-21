@@ -43,7 +43,8 @@ Catalog agents are allowlisted by default. The CLI verifies `agent/instructions.
 eve-agents/
 ├── apps/web/                  # Next.js directory site
 ├── packages/catalog/          # Shared agent catalog + file install store
-├── packages/cli/              # eve-agents CLI (bundles catalog at build)
+├── packages/cli/              # eve-agents CLI (bundled catalog + remote fallback)
+├── packages/indexer/          # GitHub auto-index for vercel-labs Eve repos
 └── data/install-counts.json   # Local install counts (dev only)
 ```
 
@@ -52,6 +53,28 @@ eve-agents/
 Edit `packages/catalog/src/agents.json` and open a PR with owner, repo, description, channels, connections, tags, and `featured`.
 
 Run `npm run build:cli` after changing the catalog so the CLI bundle stays in sync.
+
+## Auto-index from GitHub
+
+A daily cron scans `vercel-labs` for repos with `agent/instructions.md` or `agent/instructions.ts`, then opens a PR to update `packages/catalog/src/agents.json` (never auto-merges).
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `GITHUB_TOKEN` | Yes (cron) | Read `vercel-labs`, read/write catalog repo for PRs |
+| `CRON_SECRET` | Yes (prod) | Bearer token for `/api/cron/index` (set by Vercel Cron) |
+| `GITHUB_INDEX_ORG` | No | Source org (default: `vercel-labs`) |
+| `GITHUB_CATALOG_OWNER` | No | Catalog repo owner (default: `hvp17`) |
+| `GITHUB_CATALOG_REPO` | No | Catalog repo (default: `eve-agents`) |
+| `GITHUB_CATALOG_PATH` | No | Path to `agents.json` |
+| `GITHUB_CATALOG_BRANCH` | No | Base branch (default: `main`) |
+
+The site and CLI also read the live catalog from GitHub when `GITHUB_TOKEN` is set (1h cache). Without it, they fall back to the bundled `agents.json`.
+
+### Remote catalog API
+
+`GET /api/catalog` returns the full agent list with install counts. The CLI fetches this at runtime and falls back to its bundled `catalog.json` when offline.
+
+Override for CLI: `EVE_AGENTS_CATALOG_URL` or `EVE_AGENTS_SITE_URL`.
 
 ## Install telemetry
 
@@ -96,7 +119,8 @@ You should see `Install recorded (1 total on directory)` and `data/install-count
 1. Import the GitHub repo and set **Root Directory** to `apps/web`.
 2. Enable **Include source files outside of the Root Directory** (needed for the `@eve-agents/catalog` workspace package).
 3. Add Upstash Redis and env vars from [Install telemetry](#install-telemetry) above.
-4. `apps/web/vercel.json` installs dependencies from the monorepo root, then runs `next build`.
+4. Add `GITHUB_TOKEN` and `CRON_SECRET` for [auto-index](#auto-index-from-github).
+5. `apps/web/vercel.json` installs dependencies from the monorepo root, then runs `next build`. Daily cron runs at 06:00 UTC.
 
 ## Related
 
