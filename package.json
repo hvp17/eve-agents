@@ -9,6 +9,16 @@
     "dev": "npm run build:cli && npm run dev --workspace=web",
     "build": "npm run build:cli && npm run build --workspace=web",
     "build:cli": "npm run build --workspace=packages/cli",
+    "build:web": "npm run build --workspace=web",
     "lint": "npm run lint --workspace=web"
+  },
+  "optionalDependencies": {
+    "@tailwindcss/oxide-linux-arm64-gnu": "4.3.1",
+    "@tailwindcss/oxide-linux-arm64-musl": "4.3.1",
+    "@tailwindcss/oxide-linux-x64-gnu": "4.3.1",
+    "@tailwindcss/oxide-linux-x64-musl": "4.3.1",
+    "lightningcss-linux-arm64-gnu": "1.29.2",
+    "lightningcss-linux-x64-gnu": "1.29.2",
+    "lightningcss-linux-x64-musl": "1.29.2"
   }
 }
