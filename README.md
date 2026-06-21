@@ -93,10 +93,12 @@ You should see `Install recorded (1 total on directory)` and `data/install-count
 
 ## Deploy on Vercel
 
-1. Import the GitHub repo and set **Root Directory** to `.` (repository root, not `apps/web`).
-2. Add storage (Upstash Redis) and env vars from [Install telemetry](#install-telemetry) above.
-3. Vercel reads `vercel.json` at the repo root and builds `apps/web`.
+1. Import the GitHub repo and set **Root Directory** to `apps/web`.
+2. Enable **Include source files outside of the Root Directory** (needed for the `@eve-agents/catalog` workspace package).
+3. Add Upstash Redis and env vars from [Install telemetry](#install-telemetry) above.
+4. `apps/web/vercel.json` installs dependencies from the monorepo root, then runs `next build`.
 
+## Related
 
 - [Eve framework](https://eve.dev/docs)
 - [Vercel Eve templates](https://vercel.com/kb/eve)
