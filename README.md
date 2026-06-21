@@ -91,7 +91,12 @@ EVE_AGENTS_TELEMETRY_URL=http://localhost:3000/api/install \
 
 You should see `Install recorded (1 total on directory)` and `data/install-counts.json` will update.
 
-## Related
+## Deploy on Vercel
+
+1. Import the GitHub repo and set **Root Directory** to `.` (repository root, not `apps/web`).
+2. Add storage (Upstash Redis) and env vars from [Install telemetry](#install-telemetry) above.
+3. Vercel reads `vercel.json` at the repo root and builds `apps/web`.
+
 
 - [Eve framework](https://eve.dev/docs)
 - [Vercel Eve templates](https://vercel.com/kb/eve)
