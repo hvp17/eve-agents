@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Suspense } from "react";
+import { EveLogo } from "@/components/eve-logo";
 import { searchAgents, installCommand } from "@/lib/catalog";
 import { AgentSearch } from "@/components/agent-search";
 
@@ -16,14 +17,9 @@ export default async function Home({ searchParams }: HomeProps) {
   return (
     <main className="mx-auto max-w-5xl px-6 py-12">
       <section className="mb-14">
-        <pre className="mb-8 font-mono text-[10px] leading-tight text-accent sm:text-xs">
-{`███████╗██╗   ██╗███████╗
-██╔════╝██║   ██║██╔════╝
-█████╗  ██║   ██║█████╗
-██╔══╝  ╚██╗ ██╔╝██╔══╝
-███████╗ ╚████╔╝ ███████╗
-╚══════╝  ╚═══╝  ╚══════╝`}
-        </pre>
+        <div className="mb-8">
+          <EveLogo className="text-foreground" height={40} />
+        </div>
         <h1 className="mb-3 text-3xl font-semibold tracking-tight sm:text-4xl">
           The Eve agent directory
         </h1>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
+import { EveLogo } from "@/components/eve-logo";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -31,8 +32,12 @@ export default function RootLayout({
       >
         <header className="border-b border-border/80">
           <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
-            <Link href="/" className="font-mono text-sm tracking-wide text-foreground">
-              eve<span className="text-accent">.agents</span>
+            <Link
+              href="/"
+              className="flex items-center gap-2.5 text-foreground transition hover:opacity-80"
+            >
+              <EveLogo height={22} />
+              <span className="font-mono text-sm text-muted">.agents</span>
             </Link>
             <nav className="flex items-center gap-5 text-sm text-muted">
               <a

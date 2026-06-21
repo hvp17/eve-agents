@@ -12,7 +12,8 @@
   ],
   "scripts": {
     "build": "tsc && node scripts/bundle-catalog.mjs",
-    "dev": "node scripts/bundle-catalog.mjs && tsc --watch"
+    "dev": "node scripts/bundle-catalog.mjs && tsc --watch",
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
     "@types/node": "^20",
